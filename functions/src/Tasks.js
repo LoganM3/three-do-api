@@ -1,9 +1,9 @@
 
-import dbConncect from "./dbConnect.js"
+import dbConnect from "./dbConnect.js";
 
 
 export async function getTasks(req,res){
-    const db = dbConncect()
+    const db = dbConnect();
     const collection= await db.collection('tasks').get()
     .catch(err => res.status(500).send(err));
     const tasks = collection.docs.map(doc => {
@@ -11,22 +11,21 @@ export async function getTasks(req,res){
         task.id = doc.id
         return task
     })
-    res.send('tasks')
+    res.send(tasks)
 }
 
-export async function createTask(req,res){ //later we will add userId and timestamp
-    const newTask = req.body
-    if(!newTask || !newTask.task){
-        res.status(400).send({success:false, message: 'invalid request'})
-        return;
+export async function createTask(req, res) { // later we will add userId and timestamp...
+    const newTask = req.body;
+    if (!newTask || !newTask.task) {
+      res.status(400).send({ success: false, message: 'Invalid request' });
+      return;
     }
-    const db = dbConncect()
-   await db.collection('tasks').add(newTask)
-    .catch(err => res.status(500).send(err))
-    res.status(201)
-    getTasks(req,res) //send back the full list of tasks
-    
-}
+    const db = dbConnect();
+    await db.collection('tasks').add(newTask)
+      .catch(err => res.status(500).send(err));
+    res.status(201);
+    getTasks(req, res); // send back the full list of tasks...
+  }
 
 export function updateTask(req,res){
     const taskUpdate = req.body
