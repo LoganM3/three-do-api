@@ -1,5 +1,5 @@
-import { tasks } from "firebase-functions/v1";
-import dbConncect from "./dbConnect"
+
+import dbConncect from "./dbConnect.js"
 
 
 export async function getTasks(req,res){
@@ -11,7 +11,7 @@ export async function getTasks(req,res){
         task.id = doc.id
         return task
     })
-    res.send(tasks)
+    res.send('tasks')
 }
 
 export async function createTask(req,res){ //later we will add userId and timestamp
